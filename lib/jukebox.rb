@@ -1,99 +1,50 @@
-# animals = {"sugar glider"=>"Australia","aye-aye"=> "Madagascar","red-footed tortoise"=>"Panama","kangaroo"=> "Australia","tomato frog"=>"Madagascar","koala"=>"Australia"}
-
-# class Hash 
-#   def keys_of(*arguments)
-#     collect {|key, value| arguments.include?(value) ? key : nil }.compact
-#   end 
-# end 
-
-# result = animals.keys_of('Madagascar') 
-# result.length 
-##USING SPLAT OPERATOR TO CHANGE ARGUMENTS 
-
-# def say_hello(name)
-#   "Hi #{name}!"
-# end
- 
-# puts "Enter your name:"
-# users_name = gets.chomp
- 
-# puts say_hello(users_name)
-
-songs = [
-  "Phoenix - 1901",
-  "Tokyo Police Club - Wait Up",
-  "Sufjan Stevens - Too Much",
-  "The Naked and the Famous - Young Blood",
-  "(Far From) Home - Tiga",
-  "The Cults - Abducted",
-  "Phoenix - Consolation Prizes",
-  "Harry Chapin - Cats in the Cradle",
-  "Amos Lee - Keep It Loose, Keep It Tight"
-]
-
-
-
-def help
-  help = <<-HELP
-I accept the following commands:
-- help : displays this help message
-- list : displays a list of songs you can play
-- play : lets you choose a song to play
-- exit : exits this program
-HELP
-
-  puts help
+def run(songs)
+  help
+  while true do
+    puts "Please enter a command:"
+    response = gets.chomp
+    case response
+    when "exit"
+      exit_jukebox
+      break
+    when "play"
+      play(songs)
+    when "help"
+      help
+    when "list"
+      list(songs)
+    else
+      puts "Invalid entry"
+    end
+  end
 end
-
-help 
-
-def list(songs) 
-  songs.each_with_index { |item, index|
-    puts "#{index+1}. #{item}" }
-end 
-
-list(songs)
 
 def play(songs)
   puts "Please enter a song name or number:"
-  user_response = gets.downcase.chomp 
-  
-  if (1..9).to_a.include?(user_response.to_i)
-    puts "Playing #{songs[user_response.to_i - 1]}"
-    elsif songs.include?(user_response)
-    puts "Playing #{user_response}"
-  else 
+  response = gets.chomp
+  if response.to_i >= 1 && response.to_i <= songs.length
+    puts "Playing #{songs[response.to_i-1]}"
+  elsif songs.include?(response)
+    puts "Playing #{songs.find{|song| song == response}}"
+  else
     puts "Invalid input, please try again"
-  end 
-end 
-
-play(songs)
+  end
+end
 
 def exit_jukebox
   puts "Goodbye"
-end 
+end
 
-def run(songs)
-  #help
-  command = "" 
-  while command  
-  puts "Please enter a command:"
-  command = gets.downcase.strip  
-  case command 
-    when 'list'
-      list(songs)
-      when 'play'
-        list(songs)
-        play(songs)
-      when 'help'
-        help 
-      when 'exit'
-        exit_jukebox
-        break 
-      else 
-        help 
-      end 
-    end 
-  end 
-  run(songs)
-    
+def help
+puts  "I accept the following commands:"
+puts  "- help : displays this help message"
+puts  "- list : displays a list of songs you can play"
+puts  "- play : lets you choose a song to play"
+puts  "- exit : exits this program"
+end
+
+def list(songs)
+songs.each_with_index {|song, index|
+  puts "#{index+1}. #{song}"
+}
+end
